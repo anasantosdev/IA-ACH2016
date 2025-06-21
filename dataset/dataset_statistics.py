@@ -9,6 +9,7 @@
 #
 # Observações:
 # - Os gráficos serão salvos na pasta ./graficos/
+# - Usa dicionário de variáveis importado do arquivo variables-dicitionary.py
 # ================================================
 
 import os
@@ -18,14 +19,29 @@ import seaborn as sns
 from textwrap import wrap
 import io
 
+# Importa os dicionários das variáveis
+from variables_dictionary import variaveis_binarias, variaveis_ordinais, variaveis_quantitativas
+
+# Junta todos os tipos de variáveis em um único dicionário
+variaveis_dict = {}
+
+for var, props in variaveis_binarias.items():
+    variaveis_dict[var] = props["tipo"]
+for var, props in variaveis_ordinais.items():
+    variaveis_dict[var] = props["tipo"]
+for var, props in variaveis_quantitativas.items():
+    variaveis_dict[var] = props["tipo"]
+
 os.makedirs("graficos", exist_ok=True)
 
+# Dataset
 dataset = '2023/diabetes_binary_5050split_health_indicators_BRFSS2023.csv'
 dados = pd.read_csv(dataset, sep=',')
 
+# Função para salvar informações gerais
+
 def salvar_informacoes_gerais_png(df, variaveis_verificacao, arquivo_saida="graficos/informacoes_gerais.png"):
     info_buffer = []
-
     buffer = io.StringIO()
     df.info(buf=buffer)
     info_buffer.append("== Informações Gerais ==")
@@ -48,47 +64,20 @@ def salvar_informacoes_gerais_png(df, variaveis_verificacao, arquivo_saida="graf
     ax.axis("off")
     full_text = "\n".join(info_buffer)
     ax.text(0, 1, full_text, fontsize=10, va="top", family="monospace")
-
     plt.tight_layout()
     plt.savefig(arquivo_saida, dpi=300, bbox_inches="tight")
     plt.close()
     print(f"Informações gerais salvas em: {arquivo_saida}")
 
-os.makedirs("graficos", exist_ok=True)
-variaveis_verificacao = ['IMC', 'Saúde_Geral', 'Saúde_Mental', 'Saúde_Física', 'Idade', 'Nível_Educação', 'Renda']
+variaveis_verificacao = list(variaveis_quantitativas.keys()) + list(variaveis_ordinais.keys())
 salvar_informacoes_gerais_png(dados, variaveis_verificacao)
 
-# Configurações de estilo
+# Análise descritiva
 sns.set(style="whitegrid")
 plt.rcParams["figure.figsize"] = (10, 6)
 
-# Tipos de variáveis
-tipos_variaveis = {
-    "Diabetes_binário": "Binária",
-    "Pressão_Alta": "Binária",
-    "Colesterol_Alto": "Binária",
-    "Avaliou_Colesterol": "Binária",
-    "IMC": "Quantitativa contínua",
-    "Fumante": "Binária",
-    "Ataque_Cardíaco": "Binária",
-    "Doença_Coronário_ouInfarto": "Binária",
-    "Atividade_Física": "Binária",
-    "Consumo_Álcool": "Binária",
-    "Seguro_Saúde": "Binária",
-    "Acesso_Saúde": "Binária",
-    "Saúde_Geral": "Ordinal",
-    "Saúde_Mental": "Quantitativa Discreta",
-    "Saúde_Física": "Quantitativa Discreta",
-    "Dificuldade_Andar": "Binária",
-    "Gênero": "Binária",
-    "Idade": "Ordinal",
-    "Nível_Educação": "Ordinal",
-    "Renda": "Ordinal"
-}
-
-# Estatísticas + gráficos
-for var, tipo in tipos_variaveis.items():
-    print(f"\n🔹 Variável: {var} ({tipo})")
+for var, tipo in variaveis_dict.items():
+    print(f"\nVariável: {var} ({tipo})")
 
     if var not in dados.columns:
         print("Variável não encontrada no dataset.")
@@ -100,7 +89,6 @@ for var, tipo in tipos_variaveis.items():
         print(serie.describe())
         print("Moda:", serie.mode().values[0] if not serie.mode().empty else "N/A")
 
-        # Histograma
         plt.figure()
         sns.histplot(serie, kde=True, bins=20, color="steelblue")
         plt.title(f"Histograma: {var}")
@@ -118,7 +106,6 @@ for var, tipo in tipos_variaveis.items():
         print(percents.round(2))
         print("Moda:", serie.mode().values[0])
 
-        # Gráfico de barras
         plt.figure()
         sns.countplot(x=serie, order=sorted(serie.unique()), palette="pastel")
         plt.title(f"Distribuição de {var}")
@@ -128,7 +115,6 @@ for var, tipo in tipos_variaveis.items():
         plt.savefig(f"graficos/{var}_barras.png")
         plt.close()
 
-        # Gráfico de pizza
         plt.figure()
         counts.plot.pie(autopct='%1.1f%%', startangle=90, counterclock=False, colors=sns.color_palette("pastel"))
         plt.title(f"Distribuição de {var}")
