@@ -48,7 +48,7 @@ print("\nForma do dataset filtrado (linhas, colunas):", brfss_df_selected.shape)
 print("\nPrimeiras 5 linhas do dataset filtrado:")
 print(brfss_df_selected.head())
 
-#Drop Missing Values - knocks 100,000 rows out right away
+#Drop Missing Values 
 brfss_df_selected = brfss_df_selected.dropna()
 brfss_df_selected.shape
 
@@ -118,22 +118,21 @@ brfss_df_selected['_TOTINDA'] = brfss_df_selected['_TOTINDA'].replace({2:0})
 brfss_df_selected = brfss_df_selected[brfss_df_selected._TOTINDA != 9]
 brfss_df_selected._TOTINDA.unique()
 
-#11 _RFDRHV8
+#9 _RFDRHV8
 # Change 1 to 0 (1 was no for heavy drinking). change all 2 to 1 (2 was yes for heavy drinking)
 # remove all dont knows and missing 9
 brfss_df_selected['_RFDRHV8'] = brfss_df_selected['_RFDRHV8'].replace({1:0, 2:1})
 brfss_df_selected = brfss_df_selected[brfss_df_selected._RFDRHV8 != 9]
 brfss_df_selected._RFDRHV8.unique()
 
-#12 _HLTHPL1
+#10 _HLTHPL1
 # 1 is yes, change 2 to 0 because it is No health care access
-# remove 7 and 9 for don't know or refused
+# remove 9 for don't know or refused
 brfss_df_selected['_HLTHPL1'] = brfss_df_selected['_HLTHPL1'].replace({2:0})
-brfss_df_selected = brfss_df_selected[brfss_df_selected._HLTHPL1 != 7]
 brfss_df_selected = brfss_df_selected[brfss_df_selected._HLTHPL1 != 9]
 brfss_df_selected._HLTHPL1.unique()
 
-#13 MEDCOST1
+#11 MEDCOST1
 # Change 2 to 0 for no, 1 is already yes
 # remove 7 for don/t know and 9 for refused
 brfss_df_selected['MEDCOST1'] = brfss_df_selected['MEDCOST1'].replace({2:0})
@@ -141,14 +140,14 @@ brfss_df_selected = brfss_df_selected[brfss_df_selected.MEDCOST1 != 7]
 brfss_df_selected = brfss_df_selected[brfss_df_selected.MEDCOST1 != 9]
 brfss_df_selected.MEDCOST1.unique()
 
-#14 GENHLTH
+#12 GENHLTH
 # This is an ordinal variable that I want to keep (1 is Excellent -> 5 is Poor)
 # Remove 7 and 9 for don't know and refused
 brfss_df_selected = brfss_df_selected[brfss_df_selected.GENHLTH != 7]
 brfss_df_selected = brfss_df_selected[brfss_df_selected.GENHLTH != 9]
 brfss_df_selected.GENHLTH.unique()
 
-#15 MENTHLTH
+#13 MENTHLTH
 # already in days so keep that, scale will be 0-30
 # change 88 to 0 because it means none (no bad mental health days)
 # remove 77 and 99 for don't know not sure and refused
@@ -157,7 +156,7 @@ brfss_df_selected = brfss_df_selected[brfss_df_selected.MENTHLTH != 77]
 brfss_df_selected = brfss_df_selected[brfss_df_selected.MENTHLTH != 99]
 brfss_df_selected.MENTHLTH.unique()
 
-#16 PHYSHLTH
+#14 PHYSHLTH
 # already in days so keep that, scale will be 0-30
 # change 88 to 0 because it means none (no bad mental health days)
 # remove 77 and 99 for don't know not sure and refused
@@ -166,7 +165,7 @@ brfss_df_selected = brfss_df_selected[brfss_df_selected.PHYSHLTH != 77]
 brfss_df_selected = brfss_df_selected[brfss_df_selected.PHYSHLTH != 99]
 brfss_df_selected.PHYSHLTH.unique()
 
-#17 DIFFWALK
+#15 DIFFWALK
 # change 2 to 0 for no. 1 is already yes
 # remove 7 and 9 for don't know not sure and refused
 brfss_df_selected['DIFFWALK'] = brfss_df_selected['DIFFWALK'].replace({2:0})
@@ -174,33 +173,33 @@ brfss_df_selected = brfss_df_selected[brfss_df_selected.DIFFWALK != 7]
 brfss_df_selected = brfss_df_selected[brfss_df_selected.DIFFWALK != 9]
 brfss_df_selected.DIFFWALK.unique()
 
-#18 _SEX
+#16 _SEX
 # in other words - is respondent male (somewhat arbitrarily chose this change because men are at higher risk for heart disease)
 # change 2 to 0 (female as 0). Male is 1
 brfss_df_selected['_SEX'] = brfss_df_selected['_SEX'].replace({2:0})
 brfss_df_selected._SEX.unique()
 
-#19 _AGEG5YR
+#17 _AGEG5YR
 # already ordinal. 1 is 18-24 all the way up to 13 wis 80 and older. 5 year increments.
 # remove 14 because it is don't know or missing
 brfss_df_selected = brfss_df_selected[brfss_df_selected._AGEG5YR != 14]
 brfss_df_selected._AGEG5YR.unique()
 
-#20 EDUCA
+#18 EDUCA
 # This is already an ordinal variable with 1 being never attended school or kindergarten only up to 6 being college 4 years or more
-# Scale here is 1-6
+# Scale here is 1-4
 # Remove 9 for refused:
 brfss_df_selected = brfss_df_selected[brfss_df_selected.EDUCA != 9]
 brfss_df_selected.EDUCA.unique()
 
-#21 INCOME3
+#19 INCOME3
 # Variable is already ordinal with 1 being less than $10,000 all the way up to 8 being $75,000 or more
 # Remove 77 and 99 for don't know and refused
 brfss_df_selected = brfss_df_selected[brfss_df_selected.INCOME3 != 77]
 brfss_df_selected = brfss_df_selected[brfss_df_selected.INCOME3 != 99]
 brfss_df_selected.INCOME3.unique()
 
-#Check the shape of the dataset now: We have 253,680 cleaned rows and 22 columns (1 of which is our dependent variable)
+#Check the shape of the dataset 
 print(brfss_df_selected.shape)
 
 #Let's see what the data looks like after Modifying Values
@@ -210,24 +209,24 @@ print(brfss_df_selected.head())
 print(brfss_df_selected.groupby(['DIABETE4']).size())
 
 #Rename the columns to make them more readable
-brfss = brfss_df_selected.rename(columns = {'DIABETE4':'Diabetes_012', 
-                                         '_RFHYPE6':'HighBP',  
-                                         'TOLDHI3':'HighChol', '_CHOLCH3':'CholCheck', 
-                                         '_BMI5':'BMI', 
-                                         'SMOKE100':'Smoker', 
-                                         'CVDSTRK3':'Stroke', '_MICHD':'HeartDiseaseorAttack', 
-                                         '_TOTINDA':'PhysActivity', 
-                                         '_RFDRHV8':'HvyAlcoholConsump', 
-                                         '_HLTHPL1':'AnyHealthcare', 'MEDCOST1':'NoDocbcCost', 
-                                         'GENHLTH':'GenHlth', 'MENTHLTH':'MentHlth', 'PHYSHLTH':'PhysHlth', 'DIFFWALK':'DiffWalk', 
-                                         '_SEX':'Sex', '_AGEG5YR':'Age', 'EDUCA':'Education', 'INCOME3':'Income' })
+brfss = brfss_df_selected.rename(columns = {'DIABETE4':'Diabetes', 
+                                         '_RFHYPE6':'Pressão_Alta',  
+                                         'TOLDHI3':'Colesterol_Alto', '_CHOLCH3':'Avaliou_Colesterol', 
+                                         '_BMI5':'IMC', 
+                                         'SMOKE100':'Fumante', 
+                                         'CVDSTRK3':'Ataque_Cardíaco', '_MICHD':'Doença_Coronário_ouInfarto', 
+                                         '_TOTINDA':'Atividade_Física', 
+                                         '_RFDRHV8':'Consumo_Álcool', 
+                                         '_HLTHPL1':'Seguro_Saúde', 'MEDCOST1':'Acesso_Saúde', 
+                                         'GENHLTH':'Saúde_Geral', 'MENTHLTH':'Saúde_Mental', 'PHYSHLTH':'Saúde_Física', 'DIFFWALK':'Dificuldade_Andar', 
+                                         '_SEX':'Gênero', '_AGEG5YR':'Idade', 'EDUCA':'Nível_Educação', 'INCOME3':'Renda' })
 
 print(brfss.head())
 
 print(brfss.shape)
 
 #Check how many respondents have no diabetes, prediabetes or diabetes. Note the class imbalance!
-print(brfss.groupby(['Diabetes_012']).size())
+print(brfss.groupby(['Diabetes']).size())
 
 #************************************************************************************************
 brfss.to_csv('diabetes_012_health_indicators_BRFSS2023.csv', sep=",", index=False)
@@ -235,27 +234,28 @@ brfss.to_csv('diabetes_012_health_indicators_BRFSS2023.csv', sep=",", index=Fals
 
 #Copy old table to new one.
 brfss_binary = brfss
+
 #Change the diabetics 2 to a 1 and pre-diabetics 1 to a 0, so that we have 0 meaning non-diabetic and pre-diabetic and 1 meaning diabetic.
-brfss_binary['Diabetes_012'] = brfss_binary['Diabetes_012'].replace({1:0})
-brfss_binary['Diabetes_012'] = brfss_binary['Diabetes_012'].replace({2:1})
+brfss_binary['Diabetes'] = brfss_binary['Diabetes'].replace({1:0})
+brfss_binary['Diabetes'] = brfss_binary['Diabetes'].replace({2:1})
 
 #Change the column name to Diabetes_binary
-brfss_binary = brfss_binary.rename(columns = {'Diabetes_012': 'Diabetes_binary'})
+brfss_binary = brfss_binary.rename(columns = {'Diabetes': 'Diabetes_binário'})
 brfss_binary.Diabetes_binary.unique()
 
 #Show the change
 print(brfss_binary.head())
 
 #show class sizes
-print(brfss_binary.groupby(['Diabetes_binary']).size())
+print(brfss_binary.groupby(['Diabetes_binário']).size())
 
 #Separate the 0(No Diabetes) and 1&2(Pre-diabetes and Diabetes)
 #Get the 1s
-is1 = brfss_binary['Diabetes_binary'] == 1
+is1 = brfss_binary['Diabetes_binário'] == 1
 brfss_5050_1 = brfss_binary[is1]
 
 #Get the 0s
-is0 = brfss_binary['Diabetes_binary'] == 0
+is0 = brfss_binary['Diabetes_binário'] == 0
 brfss_5050_0 = brfss_binary[is0] 
 
 #Select the 39977 random cases from the 0 (non-diabetes group). we already have 35346 cases from the diabetes risk group
@@ -270,7 +270,7 @@ print(brfss_5050.head())
 print(brfss_5050.tail())
 
 #See the classes are perfectly balanced now
-print(brfss_5050.groupby(['Diabetes_binary']).size())
+print(brfss_5050.groupby(['Diabetes_binário']).size())
 
 print(f'brfss_5050={brfss_5050.shape}',f'brfss_binary={brfss_binary.shape}')
 
