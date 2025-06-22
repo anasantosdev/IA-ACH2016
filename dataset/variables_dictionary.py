@@ -103,6 +103,20 @@ variaveis_binarias = {
         "valores": {
             0: "Feminino",
             1: "Masculino"
+        },
+    },
+    "Freq_Frutas": {
+        "tipo": "Binária",
+        "valores": {
+            0: "Não consome frutas diariamente",
+            1: "Consome 1 ou mais porções de frutas diariamente"
+        }
+    },
+    "Freq_Vegetais": {
+        "tipo": "Binária",
+        "valores": {
+            0: "Não consome vegetais diariamente",
+            1: "Consome 1 ou mais porções de vegetais diariamente"
         }
     }
 }
@@ -163,6 +177,14 @@ variaveis_ordinais = {
             11: "Mais que 200.000 USD"
         }
     }
+#     "Diabetes": {
+#     "tipo": "Ordinal",
+#     "valores": {
+#             0: "Não possui Diabetes ou apenas durante a Gravidez",
+#             1: "Possui Pré-Diabetes",
+#             2: "Possui Diabetes",
+#         }
+#    },
 }
 
 variaveis_quantitativas = {

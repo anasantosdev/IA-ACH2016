@@ -15,6 +15,7 @@
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 import seaborn as sns
 from textwrap import wrap
 import io
@@ -34,8 +35,8 @@ for var, props in variaveis_quantitativas.items():
 
 os.makedirs("graficos", exist_ok=True)
 
-# Dataset
-dataset = '2023/diabetes_binary_5050split_health_indicators_BRFSS2023.csv'
+# Dataset (ajustar caminho)
+dataset = '2015/diabetes_binary_health_indicators_BRFSS2015.csv'
 dados = pd.read_csv(dataset, sep=',')
 
 # Função para salvar informações gerais
@@ -122,3 +123,33 @@ for var, tipo in variaveis_dict.items():
         plt.tight_layout()
         plt.savefig(f"graficos/{var}_pizza.png")
         plt.close()
+
+# Análise Exploratória
+
+os.makedirs("graficos", exist_ok=True)
+
+dados_numericos = dados.select_dtypes(include=["number"])
+
+correlacao = dados_numericos.corr()
+
+mascara = np.triu(np.ones_like(correlacao, dtype=bool))
+
+plt.figure(figsize=(15, 10))
+
+sns.heatmap(
+    correlacao,
+    mask=mascara,
+    cmap='RdPu',
+    annot=True,
+    fmt=".2f",
+    linewidths=0.5,
+    cbar_kws={"shrink": .8}
+)
+
+plt.title("Mapa de Calor das Correlações", fontsize=18)
+
+plt.tight_layout()
+plt.savefig("graficos/heatmap_correlacoes.png", dpi=300)
+plt.close()
+
+print("Heatmap salvo em: graficos/heatmap_correlacoes.png")
