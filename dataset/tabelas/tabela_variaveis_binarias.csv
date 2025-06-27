@@ -1,0 +1,25 @@
+Variável,Categoria,Porcentagem Total (%),Porcentagem Diabéticos (%),Porcentagem Não Diabéticos (%)
+Pressão_Alta,0,43.66,31.43,68.57
+Pressão_Alta,1,56.34,67.89,32.11
+Colesterol_Alto,0,48.02,38.06,61.94
+Colesterol_Alto,1,51.98,64.82,35.18
+Avaliou_Colesterol,0,2.1,12.19,87.81
+Avaliou_Colesterol,1,97.9,52.82,47.18
+Fumante,0,57.43,48.66,51.34
+Fumante,1,42.57,56.44,43.56
+Ataque_Cardíaco,0,93.58,50.45,49.55
+Ataque_Cardíaco,1,6.42,74.18,25.82
+Doença_Coronário_ouInfarto,0,86.04,48.08,51.92
+Doença_Coronário_ouInfarto,1,13.96,75.94,24.06
+Atividade_Física,0,29.05,67.44,32.56
+Atividade_Física,1,70.95,45.63,54.37
+Consumo_Álcool,0,95.22,53.05,46.95
+Consumo_Álcool,1,4.78,30.57,69.43
+Seguro_Saúde,0,3.05,40.12,59.88
+Seguro_Saúde,1,96.95,52.34,47.66
+Acesso_Saúde,0,92.57,51.85,48.15
+Acesso_Saúde,1,7.43,53.43,46.57
+Dificuldade_Andar,0,76.86,45.12,54.88
+Dificuldade_Andar,1,23.14,74.72,25.28
+Gênero,0,49.91,49.53,50.47
+Gênero,1,50.09,54.41,45.59
