@@ -1,0 +1,16 @@
+Acurácia: 0.7405
+AUC-ROC: 0.8119
+
+Relatório de classificação:
+              precision    recall  f1-score   support
+
+         0.0       0.75      0.68      0.71      3450
+         1.0       0.74      0.80      0.77      3910
+
+    accuracy                           0.74      7360
+   macro avg       0.74      0.74      0.74      7360
+weighted avg       0.74      0.74      0.74      7360
+
+Matriz de confusão:
+[[2336 1114]
+ [ 796 3114]]

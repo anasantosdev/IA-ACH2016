@@ -1,6 +1,7 @@
 Acurácia: 0.7361
+AUC-ROC: 0.8118
 
-Relatório de classificação (validação):
+Relatório de classificação:
               precision    recall  f1-score   support
 
          0.0       0.75      0.69      0.72      3584
