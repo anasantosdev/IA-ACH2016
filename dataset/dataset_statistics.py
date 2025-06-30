@@ -97,7 +97,7 @@ def gerar_graficos_descritivos(dados: pd.DataFrame, variaveis_dict: dict, pasta_
 
             # Gráfico de barras
             plt.figure()
-            sns.countplot(x=serie, order=sorted(serie.unique()), palette="pastel")
+            sns.countplot(x=serie, hue=serie, order=sorted(serie.unique()), palette="pastel", legend=False)
             plt.title(f"Distribuição de {var}")
             plt.xlabel(var)
             plt.ylabel("Contagem")
@@ -131,7 +131,7 @@ def plotar_comparacao_grafica(dados, variaveis_binarias, variaveis_ordinais, var
         if var in variaveis_binarias:
             # Gráfico
             plt.figure(figsize=(6, 4))
-            sns.barplot(x=var, y="Diabetes_binário", data=dados, ci=None, palette="pastel")
+            sns.barplot(x=var, y="Diabetes_binário", data=dados, hue=var, palette="pastel", errorbar=None, legend=False)
             plt.title(f"Proporção de Diabetes por {var}")
             plt.tight_layout()
             plt.savefig(f"graficos/comparacao_diabetes/{var}_barplot.png")
@@ -157,7 +157,7 @@ def plotar_comparacao_grafica(dados, variaveis_binarias, variaveis_ordinais, var
 
         elif var in variaveis_ordinais:
             plt.figure(figsize=(8, 4))
-            sns.pointplot(x=var, y="Diabetes_binário", data=dados, ci=None, color="steelblue")
+            sns.pointplot(x=var, y="Diabetes_binário", data=dados, errorbar=None, color="steelblue")
             plt.title(f"Proporção de Diabetes por {var}")
             plt.tight_layout()
             plt.savefig(f"graficos/comparacao_diabetes/{var}_pointplot.png")
@@ -165,7 +165,7 @@ def plotar_comparacao_grafica(dados, variaveis_binarias, variaveis_ordinais, var
 
         elif var in variaveis_quantitativas:
             plt.figure(figsize=(8, 4))
-            sns.boxplot(x="Diabetes_binário", y=var, data=dados, palette="pastel")
+            sns.boxplot(x="Diabetes_binário", y=var, data=dados, hue="Diabetes_binário", palette="pastel", legend=False)
             plt.title(f"Distribuição de {var} por Diabetes")
             plt.xticks([0, 1], ["Não diabético", "Diabético"])
             plt.tight_layout()

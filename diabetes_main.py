@@ -44,11 +44,11 @@ def carregar_dataset(caminho_csv):
     return df
 
 def preprocessar_dataset(df, target="Diabetes_binário"):
-    # variaveis_nao_binarias = [
-    #     "IMC", "Saúde_Mental", "Saúde_Física",
-    #     "Saúde_Geral", "Idade", "Nível_Educação", "Renda"
-    # ]
+    variaveis_nao_binarias = [
+        "IMC", "Saúde_Geral", "Idade", "Nível_Educação", "Renda"
+    ]
 
+    # Variáveis com baixa significância estatística
     variaveis_baixo_impacto = [
         "Acesso_Saúde", "Fumante", "Seguro_Saúde", "Saúde_Mental", 
         "Saúde_Física", "Avaliou_Colesterol", "Consumo_Álcool"
@@ -57,11 +57,13 @@ def preprocessar_dataset(df, target="Diabetes_binário"):
     X = df.drop(columns=[target] + variaveis_baixo_impacto)
     y = df[target]
 
-    # colunas_validas = [col for col in variaveis_nao_binarias if col in X.columns]
+    # Padronização das variáveis não binárias
+    colunas_validas = [col for col in variaveis_nao_binarias if col in X.columns]
 
-    # scaler = StandardScaler()
-    # X[colunas_validas] = scaler.fit_transform(X[colunas_validas])
+    scaler = StandardScaler()
+    X[colunas_validas] = scaler.fit_transform(X[colunas_validas])
 
+    # Data splitting 
     X_train, X_temp, y_train, y_temp = train_test_split(
         X, y, test_size=0.2, random_state=42
     )
@@ -74,13 +76,6 @@ def preprocessar_dataset(df, target="Diabetes_binário"):
 
 def treinar_modelo(algoritmo, X_train, y_train):
     if algoritmo == "logistic":
-        # modelo = LogisticRegression(max_iter=1000, random_state=42)
-        # modelo = LogisticRegression(
-        #     penalty='l1',
-        #     solver='liblinear',
-        #     max_iter=1000,
-        #     random_state=42
-        # )
         modelo = LogisticRegression(
             penalty='l2',
             solver='lbfgs',
@@ -200,7 +195,14 @@ def interpretar_coefs(modelo, X_train, salvar_em="avaliacoes"):
     }).sort_values(by="Coeficiente", key=abs, ascending=False)
 
     plt.figure(figsize=(10,6))
-    sns.barplot(x="Coeficiente", y="Variável", data=df_coefs, palette="coolwarm")
+    sns.barplot(
+        x="Coeficiente", 
+        y="Variável", 
+        data=df_coefs, 
+        hue="Variável", 
+        palette="coolwarm", 
+        legend=False
+    )
     plt.title("Coeficientes da Regressão Logística")
     plt.tight_layout()
 
@@ -210,7 +212,7 @@ def interpretar_coefs(modelo, X_train, salvar_em="avaliacoes"):
 
     print(f"\n======= Gráfico de coeficientes salvo em: {caminho_img}")
 
-def importar_feature_importance(modelo, X_train, salvar_em="avaliacoes"):
+def interpretar_feature_importance(modelo, X_train, salvar_em="avaliacoes"):
     importancias = modelo.feature_importances_
     variaveis = X_train.columns
 
@@ -275,7 +277,7 @@ def main():
         interpretar_coefs(modelo, X_train)
     else:
         print("\n======= Importância das variáveis (feature importance):")
-        importar_feature_importance(modelo, X_train)
+        interpretar_feature_importance(modelo, X_train)
 
     print("\n======= Fim da Execução =======")
 
